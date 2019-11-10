@@ -1,0 +1,18 @@
+In the folder you will find the testme.c file and makefile.
+
+In the make file there are the following options:
+
+make randomtest (or just 'make' that the same thing): 
+this will make the executable in the name of randomtest without gcov flag in this mode
+the newly generated executable will be ran as well.
+
+make cCompile:
+This will compile the program with the gcov flags and the executable will be named
+coveragetest. The new generated executable will be ran as well in this mode.
+
+make coverage:
+This mode will run gcov with testme.c after the program has been ran at least once and
+return the branch coverage.
+
+clean:
+This mode will clean everything that is generated from the make file.
