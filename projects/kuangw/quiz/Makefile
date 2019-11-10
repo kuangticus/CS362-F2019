@@ -9,7 +9,7 @@ cCompile:
 	./coveragetest
 
 coverage:
-	gcov testme.c
+	gcov -b testme.c
 
 clean: 
 	rm coveragetest randomtest testme.c.gcov testme.gcda testme.gcno 
