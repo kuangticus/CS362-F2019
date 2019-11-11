@@ -1,0 +1,64 @@
+        -:    0:Source:unittest4.c
+        -:    0:Graph:unittest4.gcno
+        -:    0:Data:unittest4.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:// unit testing the tribute function and functionality and for bugs
+        -:    2:#include "dominion.h"
+        -:    3:#include "dominion_helpers.h"
+        -:    4:#include <string.h>
+        -:    5:#include <stdio.h>
+        -:    6:#include <assert.h>
+        -:    7:#include "rngs.h"
+        -:    8:
+        1:    9:int main() {
+        -:   10:    int i;
+        1:   11:    int seed = 1000;
+        1:   12:    int numPlayer = 2;
+        1:   13:    int maxHandCount = 5;
+        -:   14:
+        1:   15:    int k[10] = {adventurer, council_room, minion, ambassador, mine
+        -:   16:                , remodel, smithy, village, baron, great_hall};
+        -:   17:    struct gameState G;
+        -:   18:    
+        1:   19:    int testHand[maxHandCount];
+        1:   20:    testHand[0] = tribute;  // tribute card in hand
+        1:   21:    testHand[1] = mine; // mine card
+        1:   22:    testHand[2] = baron; // baron
+        1:   23:    testHand[3] = copper; // copper
+        1:   24:    testHand[4] = estate; // estate
+        -:   25:
+        1:   26:    memset(&G, 23, sizeof(struct gameState));   // clear the game state
+        1:   27:    initializeGame(numPlayer, k, seed, &G); // initialize a new game
+        1:   28:    G.deckCount[0] = maxHandCount;
+        1:   29:    memcpy(G.deck[0], testHand, sizeof(int) * maxHandCount); 
+        1:   30:    memcpy(G.deck[1], testHand, sizeof(int) * maxHandCount); 
+        -:   31:
+        6:   32:    for (i = 0; i < 5; i++) // draws 5 cards for the 2nd player
+        -:   33:    {
+        5:   34:        drawCard(1, &G);
+        -:   35:    }
+        -:   36:
+        1:   37:    printf("I will be testing the tribute function out. \n");
+        -:   38:    int tributeRevealedCards[2];
+        1:   39:    int prevCardNum = G.handCount[0];
+        1:   40:    tributeCard(1, 0, &G, tributeRevealedCards );
+        -:   41:
+        -:   42:    // this is chekcing to see if the correct number of thing extra cards are added from the treasure card tributes
+        1:   43:    if ( prevCardNum + 2 == G.handCount[0])
+    #####:   44:        printf("%s\n", "The right amount of cards have been added to the the current player's hand.");
+        -:   45:    else 
+        1:   46:        printf("%d%s\n", G.handCount[0] - prevCardNum - 2, " extra cards added to cur player's hand.");
+        -:   47:
+        -:   48:    // this checks if the duplicates are removed correct from tribute bank
+        -:   49:
+        1:   50:    if ( tributeRevealedCards[1] == -1)
+        1:   51:        printf( "%s\n", "The duplicate remove logic is not working correctly.");
+        -:   52:    else 
+    #####:   53:        printf("%s", "The removing of duplicates is correct and working the way we designed.");
+        -:   54:
+        1:   55:    return 0;
+        -:   56:
+        -:   57:}
+        -:   58:
+        -:   59:     

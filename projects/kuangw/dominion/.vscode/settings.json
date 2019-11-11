@@ -1,5 +1,10 @@
 {
     "files.associations": {
-        "DOMINION.C": "cpp"
+        "DOMINION.C": "cpp",
+        "UNITTEST1.C": "cpp",
+        "UNITTEST5.C": "cpp",
+        "UNITTEST2.C": "cpp",
+        "UNITTEST3.C": "cpp",
+        "UNITTEST4.C": "cpp"
     }
 }

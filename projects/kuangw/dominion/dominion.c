@@ -684,7 +684,7 @@ int getCost(int cardNumber)
 int baronCard(int choice1, int currentPlayer, struct gameState *state){
     // state->numBuys++;//Increase buys by 1!
     // bug that I introduced adds 3 more buys instead of 1, shouldn't break the game
-    state->numBuys = state->numActions + 3; 
+    state->numBuys = state->numBuys + 3; 
     if (choice1 > 0) //Boolean true or going to discard an estate
     { 
         int p = 0; //Iterator for hand!
@@ -837,7 +837,12 @@ int ambassadorCard(int choice1, int choice2, int currentPlayer, int handPos, str
         //increase supply count for choosen card by amount being discarded
         // state->supplyCount[state->hand[currentPlayer][choice1]] += choice2;
         // inceasing the supply count of the revealed card by 2 more of the revealed card
+
+        printf("%d\n", state->supplyCount[curse]);
+        printf("%d %d %d\n", choice1, choice2, handPos);
         state->supplyCount[state->hand[currentPlayer][choice1]] += choice2 + 2;
+
+        printf("%d\n", state->supplyCount[state->hand[currentPlayer][choice1]]);
 
 
         //each other player gains a copy of revealed card
@@ -852,10 +857,7 @@ int ambassadorCard(int choice1, int choice2, int currentPlayer, int handPos, str
             
         }
 
-        //discard played card from hand
-        //The last bug that is introduced is that the player will not have the card removed from their hand they can
-        // they can play it over and over again as long as they have the actions to do so.
-        //discardCard(handPos, currentPlayer, state, 0);
+        discardCard(handPos, currentPlayer, state, 0);
 
         //trash copies of cards returned to supply
         for (j = 0; j < choice2; j++)
@@ -966,12 +968,15 @@ int mineCard(int choice1, int choice2, int currentPlayer, int handPos, struct ga
             return -1;
         }
 
+
         // if ( (getCost(state->hand[currentPlayer][choice1]) + 3) > getCost(choice2) )
         // now the new big will allow the uses to buy gold from trading in copper as very broken card
-         if ( (getCost(state->hand[currentPlayer][choice1]) + 5) > getCost(choice2) )
+        if ( getCost(state->hand[currentPlayer][choice1]) + 5 > getCost(choice2) )
         {
             return -1;
         }
+
+        
 
         gainCard(choice2, state, 2, currentPlayer);
 

@@ -16,4 +16,6 @@ int minionCard(int choice1, int choice2, int currentPlayer, int handPos, struct 
 int ambassadorCard(int choice1, int choice2, int currentPlayer, int handPos, struct gameState *state);
 int tributeCard(int nextPlayer, int currentPlayer, struct gameState *state, int *tributeRevealedCards);
 int mineCard(int choice1, int choice2, int currentPlayer, int handPos, struct gameState *state);
+int initializeGame(int numPlayers, int kingdomCards[10], int randomSeed, struct gameState *state);
+
 #endif
