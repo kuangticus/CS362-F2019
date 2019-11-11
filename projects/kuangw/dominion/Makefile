@@ -28,7 +28,7 @@ player: player.c interface.o
 all: playdom player 
 
 clean:
-	rm -f *.o playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe unittest1 unittest2 unittest3 unittest4 unittest5
+	rm -f *.o playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe unittest1 unittest2 unittest3 unittest4 unittest5 unittestresults.out
 
 unit1: unittest1.c dominion.o rngs.o 
 	gcc  -o unittest1 -g unittest1.c dominion.o rngs.o $(CFLAGS)
@@ -44,5 +44,26 @@ unit4: unittest4.c dominion.o rngs.o
 
 unit5: unittest5.c dominion.o rngs.o 
 	gcc  -o unittest5 -g unittest5.c dominion.o rngs.o $(CFLAGS)	
+
+unittestresults: unit1 unit2 unit3 unit4 unit5
+	./unittest1	>> unittestresults.out
+	gcov -b -f unittest1 >> unittestresults.out
+	echo "" >> unittestresults.out
+	./unittest2	>> unittestresults.out
+	gcov -b -f unittest2 >> unittestresults.out
+	echo "" >> unittestresults.out
+	./unittest3	>> unittestresults.out
+	gcov -b -f unittest3 >> unittestresults.out
+	echo "" >> unittestresults.out
+	./unittest4	>> unittestresults.out
+	gcov -b -f unittest4 >> unittestresults.out
+	echo "" >> unittestresults.out
+	./unittest5	>> unittestresults.out
+	gcov -b -f unittest5 >> unittestresults.out
+	echo "" >> unittestresults.out
+
+
+	
+
 
 
