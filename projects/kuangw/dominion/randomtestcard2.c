@@ -61,7 +61,7 @@ int main () {
             drawCard(p, &G);
         }
 
-        printf("%s%d%s", "I will be testing the the baronCard for correct coin addition. Test: ", count+1, " \n");
+        printf("%s%d%s", "I will be testing the the minionCard for correct coin addition. Test: ", count+1, " \n");
 
         // testing the minion function
         // random inputs to the function that I made.
