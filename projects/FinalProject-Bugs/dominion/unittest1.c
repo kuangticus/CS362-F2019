@@ -19,7 +19,7 @@ int main() {
     int testHand[maxHandCount];
     testHand[0] = mine;  // mine card in hand
     testHand[1] = copper;
-    testHand[2] = baron;
+    testHand[2] = silver;
     testHand[3] = estate;
     testHand[4] = estate;
 
@@ -50,28 +50,28 @@ int main() {
     assert( G.handCount[cp] == tempNum ); 
     printf("gainCard() and discardCard() is working correctly.\n");
 
+    printf("Testing the cardEffect() case statement mine.\n");
 
-    printf("Testing to see if cardEffect() mine case is working correctly.\n");
+    // swapping a sivler for gold
+    int handInit = G.handCount[cp];
     int bonus;
-    // since we know that the only combination that should not work is the copper to gold
-    int checkRet = cardEffect(G.hand[cp][0], 1 , gold, 0, &G, 0, &bonus);
+    cardEffect(G.hand[cp][0], 2 , gold, 0, &G, 0, &bonus);
+
+    if ( handInit-1 ==  G.handCount[cp] )
+        printf("Removal logic is working!\n");
+    else
+        printf("Removal logic is not working!\n");
 
     int isThereGold = 0;
     for ( i =0; i< G.handCount[cp]; i++)
         if ( G.hand[cp][i] == gold)
             isThereGold = 1;
-    if ( isThereGold != 0 && checkRet != -1 )
-        printf("There is an issure with checking the for valud parameters\n");
-
-    if ( isThereGold == 0 )
-        printf("The code is working correctly when faced with copper to gold trading.\n");
+    
+    if (isThereGold == 1 )
+        printf("Removal logic is working! Correctly added gold.\n");
     else
-        printf("The code is not working correctly when faced with copper to gold trading.\n");
+        printf("Removal logic is not working! Didn't add gold.\n");
 
-    if (checkRet == -1)
-        printf("cardEffect() mine case is working correctly. Return 0\n");
-    else
-        printf("cardEffect() mine case is not working correctly. Return -1\n");
 
 
     return 0;

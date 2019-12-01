@@ -56,21 +56,28 @@ int main() {
     printf("End of testing gainCard() and discardCard().\n");
 
 
-    printf("Testing to see if cardEffect() mine case is working correctly.\n");
+  printf("Testing to see if cardEffect() mine case is working correctly.\n");
     int bonus;
     // since we know that the only combination that should not work is the copper to gold
     int checkRet = cardEffect(G.hand[cp][0], 1 , gold, 0, &G, 0, &bonus);
 
-    if (checkRet == -1)
-        printf("carEffect Mine case is working correctly.\n");
-    // this just basically checks the return value of card effect this should
-    // return -1 when when copper to silver is inputted
-    // copper tp gold should not work, if it works then something is wrong
-    
-    if (checkRet == -1)
-       printf("cardEffect() mine case is working correctly.\n");
+    int isThereGold = 0;
+    for ( i =0; i< G.handCount[cp]; i++)
+        if ( G.hand[cp][i] == gold)
+            isThereGold = 1;
+    if ( isThereGold != 0 && checkRet != -1 )
+        printf("There is an issure with checking the for valud parameters\n");
+
+    if ( isThereGold == 0 )
+        printf("The code is working correctly when faced with copper to gold trading.\n");
     else
-       printf("cardEffect() mine case is not working correctly.\n");
+        printf("The code is not working correctly when faced with copper to gold trading.\n");
+
+    if (checkRet == -1)
+        printf("cardEffect() mine case is working correctly. Return 0\n");
+    else
+        printf("cardEffect() mine case is not working correctly. Return -1\n");
+
 
     return 0;
 
