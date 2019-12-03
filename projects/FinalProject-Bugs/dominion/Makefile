@@ -60,12 +60,21 @@ unit9: unittest9.c dominion.o rngs.o
 unit10: unittest10.c dominion.o rngs.o 
 	gcc  -o unittest10 -g unittest10.c dominion.o rngs.o $(CFLAGS)
 
-unittestresults: unit1 unit2 unit9 unit10
+unittestresults: unit1 unit2 unit5 unit6 unit8 unit9 unit10
 	./unittest1	>> unittestresults.out
 	gcov -b -f unittest1 >> unittestresults.out
 	echo "" >> unittestresults.out
 	./unittest2	>> unittestresults.out
 	gcov -b -f unittest2 >> unittestresults.out
+	echo "" >> unittestresults.out
+	./unittest5	>> unittestresults.out
+	gcov -b -f unittest5 >> unittestresults.out
+	echo "" >> unittestresults.out
+	./unittest6	>> unittestresults.out
+	gcov -b -f unittest6 >> unittestresults.out
+	echo "" >> unittestresults.out
+	./unittest8	>> unittestresults.out
+	gcov -b -f unittest8 >> unittestresults.out
 	echo "" >> unittestresults.out
 	./unittest9	>> unittestresults.out
 	gcov -b -f unittest9 >> unittestresults.out

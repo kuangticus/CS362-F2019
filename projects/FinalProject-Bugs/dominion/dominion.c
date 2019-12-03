@@ -266,6 +266,7 @@ int playCard(int handPos, int choice1, int choice2, int choice3, struct gameStat
     state->numActions--;
 
     //update coins (Treasure cards may be added with card draws)
+
     updateCoins(state->whoseTurn, state, coin_bonus);
 
     return 0;
@@ -895,7 +896,8 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
             int card_not_discarded = 1;//Flag for discard set!
             while(card_not_discarded) {
                 if (state->hand[currentPlayer][p] == estate) { //Found an estate card!
-                    state->coins += 4;//Add 4 coins to the amount of coins
+                    state->coins += 4; //Add 4 coins to the amount of coins
+                    // *bonus += 4;
                     state->discard[currentPlayer][state->discardCount[currentPlayer]] = state->hand[currentPlayer][p];
                     state->discardCount[currentPlayer]++;
                     for (; p < state->handCount[currentPlayer]; p++) {
@@ -926,6 +928,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
                 }
             }
         }
+        
 
         else {
             if (supplyCount(estate, state) > 0) {
@@ -937,6 +940,9 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
                 }
             }
         }
+
+        printf("%d%s", *bonus, "This is bonus from baron\n");
+
 
 
         return 0;
@@ -961,6 +967,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 
 		if (choice1)
         {
+            // *bonus += 2;
             state->coins = state->coins + 2;
         }
         else if (choice2)		//discard hand, redraw 4, other players with 5+ cards discard hand and draw 4
@@ -1013,6 +1020,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
         {
             //+2 coins
             state->coins = state->coins + 2;
+            // *bonus += 2;
         }
         else
         {
@@ -1071,6 +1079,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
         for (i = 0; i <= 2; i ++) {  // this is a bug here that should be where the tribute cards should be 0 and 1 indexs not 2 as well.
             if (tributeRevealedCards[i] == copper || tributeRevealedCards[i] == silver || tributeRevealedCards[i] == gold) { //Treasure cards
                 state->coins += 2;
+                // *bonus += 2;
             }
 
             else if (tributeRevealedCards[i] == estate || tributeRevealedCards[i] == duchy || tributeRevealedCards[i] == province || tributeRevealedCards[i] == gardens || tributeRevealedCards[i] == great_hall) { //Victory Card Found
@@ -1180,6 +1189,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 
     case embargo:
         //+2 Coins
+        // *bonus += 2;
         state->coins = state->coins + 2;
 
         //see if selected pile is in play
@@ -1211,6 +1221,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
         {
             //gain coins equal to trashed card
             state->coins = state->coins + getCost( handCard(choice1, state) );
+            // *bonus = getCost( handCard(choice1, state) );
             //trash card
             discardCard(choice1, currentPlayer, state, 1);
         }
