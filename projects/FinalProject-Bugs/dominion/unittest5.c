@@ -1,71 +1,104 @@
+
 #include "dominion.h"
 #include "dominion_helpers.h"
+#include "rngs.h"
 #include <string.h>
 #include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
 #include <assert.h>
-#include "rngs.h"
 
-int main() {
-	int i;
-    int seed = 1000;
-    int numPlayer = 2;
-    int maxHandCount = 5, cp = 0; // cp is current player
+int main()
+{
+	int  i; // j, b, c;
+	// set your card array
+	int handcount = 5, cp = 0;//hand count and currentplayer
+	int deckestate = 0, handestate = 0, discardestate = 0;
+	int k[10] = { copper, silver, gold, feast, mine , remodel, smithy, village, adventurer, baron };
+	// declare the game state. No victory card.
+	struct gameState G;
+	// declare the arrays of all coppers, silvers, and golds
 
-    int k[10] = {adventurer, council_room, feast, ambassador, mine
-                , remodel, smithy, village, baron, curse};
-    struct gameState G;
-    
-    // for current player
-    int testHand[maxHandCount];
-    testHand[0] = estate; 
-    testHand[1] = estate;
-    testHand[2] = estate;
-    testHand[3] = estate;
-    testHand[4] = estate;
+	printf("Testing the scoreFor() case.\n");
 
-    memset(&G, 23, sizeof(struct gameState));   // clear the game state
-    initializeGame(numPlayer, k, seed, &G); // initialize a new game
-    G.deckCount[cp] = maxHandCount;                 // set the number of cards on hand
-    memcpy(G.deck[cp], testHand, sizeof(int) * maxHandCount);
-	drawCard(cp, &G);
+	int seed = rand() % 100;//initialize random seed
 
-	// the for loop below are for the initial check we should follow
-	// can compared the the current logic to
-	int count1 =0 ;
-	for ( i=0; i <G.deckCount[cp]; i++){
-		if ( G.deck[cp][i] == estate )
-			count1++;
+	int testHand[handcount];
+	testHand[0] = mine;
+	testHand[1] = copper;
+	testHand[2] = silver;
+	testHand[3] = estate;
+	testHand[4] = estate;//2 states on hand, means 2 points
+
+	//test scoreFor()
+	// set the state of your variables.
+	memset(&G, 23, sizeof(struct gameState)); // clear the game state
+	initializeGame(2, k, seed, &G); // initialize a new game. Set num of players to 2. 
+	G.deckCount[cp] = handcount;
+	memcpy(G.hand[cp], testHand, sizeof(int) * handcount);
+	drawCard(cp, &G);//draw cards first, or scoreFor won't return any information
+
+	//get number of estates from players' decks, hand, and discard
+	deckestate = 0;
+	for (i = 0; i < G.deckCount[cp]; i++) {
+		if (G.deck[cp][i] == estate)
+			deckestate++;
 	}
-	printf("Deck estates %d\n", count1);
 
-	int count2 =0;
-
-	for ( i=0; i <G.handCount[cp]; i++){
-		if ( G.hand[cp][i] == estate )
-			count2++;
+	handestate = 0;
+	for (i = 0; i < G.handCount[cp]; i++) {
+		if (G.hand[cp][i] == estate)
+			handestate++;
 	}
-	printf("Hand Estates %d\n", count2);
 
-	int count3 =0;
-	for ( i=0; i <G.discardCount[cp]; i++){
-		if ( G.hand[cp][i] == estate )
-			count3++;
+	discardestate = 0;
+	for (i = 0; i < G.discardCount[cp]; i++) {
+		if (G.discard[cp][i] == estate)
+			discardestate++;
 	}
-	printf("Discarded Estates %d\n", count3);
-
-	// the score of this will be right since it is playing by the rules
-	printf("ScoreFor current player should be %d\n", count1 + count2 + count3);
 	
-    printf("Testing the scoreFor function.\n");
+	printf("Estate on deck: %d, hand: %d, discard: %d\n", deckestate, handestate, discardestate);
+	printf("The score should be %d\n", deckestate + handestate + discardestate);
+	//test original score
+	printf("The scoreFor() prints %d\n", scoreFor(cp, &G));
 
-	// this will call the score card function;
-	int curScore = scoreFor(cp, &G);
+	//test 2: discard 3 times and make discard bigger than deck
+	//initialize a new game
+	// set the state of your variables.
+	memset(&G, 23, sizeof(struct gameState)); // clear the game state
+	initializeGame(2, k, seed, &G); // initialize a new game. Set num of players to 2. 
+	G.deckCount[cp] = handcount;
+	memcpy(G.hand[cp], testHand, sizeof(int) * handcount);
+	drawCard(cp, &G);//draw cards first, or scoreFor won't return any information
+	gainCard(mine, &G, 0, cp); //player 0 discards a mine
+	gainCard(estate, &G, 2, cp); //player 0 hands an estate
 
-	// checks to see if the score is correct if not says so
-	if ( curScore != count1 + count2 + count3)
-		printf("Score function is wrong!\n");
-	else
-		printf("Score function is right!\n");
-    
-    return 0;
+	deckestate = 0;
+	for (i = 0; i < G.deckCount[cp]; i++) {
+		if (G.deck[cp][i] == estate)
+			deckestate++;
+	}
+
+	handestate = 0;
+	for (i = 0; i < G.handCount[cp]; i++) {
+		if (G.hand[cp][i] == estate)
+			handestate++;
+	}
+
+	discardestate = 0;
+	for (i = 0; i < G.discardCount[cp]; i++) {
+		if (G.discard[cp][i] == estate)
+			discardestate++;
+	}
+
+	printf("Estate on deck: %d, hand: %d, discard: %d\n", deckestate, handestate, discardestate);
+	printf("The score should be %d\n", deckestate + handestate + discardestate);
+	//test original score
+	printf("The scoreFor() prints %d\n", scoreFor(cp, &G));
+
+
+
+
+	printf("Ending Testing scoreFor()\n");
+	return 0;
 }
