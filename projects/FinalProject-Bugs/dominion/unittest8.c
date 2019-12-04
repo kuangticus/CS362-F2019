@@ -94,9 +94,9 @@ int main() {
 
 	printf( "%s%d%s%d\n", "initial Coins: ", tribCoins, " After card coins: ", G.coins);
 	if ( tribCoins + 2 == G.coins )
-		printf("The coin adding for tribute card is incorrect 2 coins were not added.\n");
-	else
 		printf("The coin adding for tribute card is corrected 2 coins added.\n");
+	else
+		printf("The coin adding for tribute card is incorrect 2 coins were not added.\n");
 
 	printf("Finished testing tribute\n\n");
 	/****************************************************************************************************/
